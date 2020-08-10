@@ -1,7 +1,11 @@
+.container {
+    display: flex;
+}
+
 .grid {
     width: 200px;
     height: 400px;
-    background-color: navy;
+    background-color: black;
 }
 
 .grid div{
