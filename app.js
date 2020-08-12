@@ -73,7 +73,22 @@ function moveDown () {
     undraw();
     currentPosition += width;
     draw();
+    freeze();
 }
+
+//assign functions to keyCodes
+function control(e) {
+    if(e.keyCode === 37){
+        moveLeft()
+    } else if (e.keyCode === 38){
+        rotate()
+    } else if (e.keyCode === 39){
+        moveRight()
+    } else if (e.keyCode === 40) {
+        moveDown()
+    }
+}
+document.addEventListener('keyup',control)
 
 //freeze function
 function freeze(){
@@ -86,6 +101,50 @@ function freeze(){
         draw()
     }
 }
+
+//move the tetromino left unless it is at the edge or there is a blockage
+function moveLeft(){
+    undraw()
+    const isAtLeftEdge = current.some(index => (currentPosition + index) % width === 0)
+    if(!isAtLeftEdge) currentPosition -= 1
+    if(currentPosition.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+        currentPosition += 1;
+    }
+     draw()
+}
+//move the tetromino right, unless is at the edge or there is a blockage
+function moveRight(){
+    undraw()
+    const isAtRightEdge = current.some(index => (currentPosition + index) % width === width - 1)
+    if(!isAtRightEdge) currentPosition += 1
+    if(currentPosition.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+        currentPosition -= 1;
+    }
+     draw()
+}
+   
+function rotate() {
+    undraw()
+    currentRotation ++
+    if(currentRotation === current.length) {
+        //if currentRotation gets to 4, make it go back to 0
+        currentRotation === 0
+    }
+    current = theTetrominoes[random][currentRotation]
+    draw()
+}
+
+//show up-next tetromino in mini-grid display
+const displaySquares = document.querySelectorAll('.mini-grid div')
+const displayWidth = 4
+let displayIndex = 0
+
+const upNextTetrominoes = [
+    [1,displayWidth+1, displayWidth*2+1, 2],//lTetromino
+    [0,displayWidth, displayWidth+1, displayWidth*2+1],//zTetromino
+    [1, displayWidth, displayWidth+1, displayWidth+2],
+]
+
 
 
 });
